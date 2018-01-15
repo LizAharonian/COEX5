@@ -1,4 +1,3 @@
-
 typedef struct {
     unsigned char red;
     unsigned char green;
@@ -30,12 +29,10 @@ typedef struct {
  * assign_sum_to_pixel - Truncates pixel's new value to match the range [0,255]
  *//*
 static void assign_sum_to_pixel(pixel *current_pixel, pixel_sum sum, int kernelScale) {
-
     // divide by kernel's weight
     sum.red = sum.red / kernelScale;
     sum.green = sum.green / kernelScale;
     sum.blue = sum.blue / kernelScale;
-
     // truncate each pixel's color values to match the range [0,255]
     current_pixel->red = (unsigned char) (min(max(sum.red, 0), 255));
     current_pixel->green = (unsigned char) (min(max(sum.green, 0), 255));
@@ -137,7 +134,7 @@ void smooth(int dim, pixel *src, pixel *dst, int kernelSize, int kernel[kernelSi
 
 
             int ii, jj;
-          //  int currRow, currCol;
+            //  int currRow, currCol;
             pixel_sum sum;
             pixel current_pixel;
 
@@ -185,9 +182,10 @@ void smooth(int dim, pixel *src, pixel *dst, int kernelSize, int kernel[kernelSi
             //todo: remove call to func assign_sum_to_pixel
 
             // divide by kernel's weight
-            sum.red = sum.red / kernelScale;
+            //todo: kernal size is 1 so i deleted it
+           /* sum.red = sum.red / kernelScale;
             sum.green = sum.green / kernelScale;
-            sum.blue = sum.blue / kernelScale;
+            sum.blue = sum.blue / kernelScale;*/
 
             // truncate each pixel's color values to match the range [0,255]
             current_pixel.red = (unsigned char) (min(max(sum.red, 0), 255));
@@ -205,40 +203,31 @@ void smooth(int dim, pixel *src, pixel *dst, int kernelSize, int kernel[kernelSi
     }
 }
 /*
-
 void charsToPixels(Image *charsImg, pixel* pixels) {
-
     int row, col,rn;
     rn = 0;
     for (row = 0 ; row < m ; row++) {
         for (col = 0 ; col < n ; col++) {
-
             pixels[row*n + col].red = image->data[3*row*n + 3*col];
             pixels[row*n + col].green = image->data[3*row*n + 3*col + 1];
             pixels[row*n + col].blue = image->data[3*row*n + 3*col + 2];
         }
     }
 }
-
 void pixelsToChars(pixel* pixels, Image *charsImg) {
-
     int row, col;
     for (row = 0 ; row < m ; row++) {
         for (col = 0 ; col < n ; col++) {
-
             image->data[3*row*n + 3*col] = pixels[row*n + col].red;
             image->data[3*row*n + 3*col + 1] = pixels[row*n + col].green;
             image->data[3*row*n + 3*col + 2] = pixels[row*n + col].blue;
         }
     }
 }
-
 void copyPixels(pixel* src, pixel* dst) {
-
     int row, col;
     for (row = 0 ; row < m ; row++) {
         for (col = 0 ; col < n ; col++) {
-
             dst[row*n + col].red = src[row*n + col].red;
             dst[row*n + col].green = src[row*n + col].green;
             dst[row*n + col].blue = src[row*n + col].blue;
@@ -250,10 +239,8 @@ void copyPixels(pixel* src, pixel* dst) {
 
 void doConvolutionBlur(Image *image, int kernelSize, int kernel[kernelSize][kernelSize], int kernelScale) {
 /*
-
     pixel* pixelsImg = malloc(m*n*sizeof(pixel));
     pixel* backupOrg = malloc(m*n*sizeof(pixel));
-
     charsToPixels(image, pixelsImg);
     copyPixels(pixelsImg, backupOrg);
 */
@@ -263,7 +250,7 @@ void doConvolutionBlur(Image *image, int kernelSize, int kernel[kernelSize][kern
     pixel* backupOrg = malloc(x);
     memcpy(backupOrg, pixelsImg , x);
 
-   // smooth(m, backupOrg, pixelsImg, kernelSize, kernel, kernelScale);
+    // smooth(m, backupOrg, pixelsImg, kernelSize, kernel, kernelScale);
     //todo: get ride of calling to smooth func
 
     //todo: get ride of repptive calculations
@@ -291,7 +278,6 @@ void doConvolutionBlur(Image *image, int kernelSize, int kernel[kernelSize][kern
                 for(jj = max(j-1, 0); jj <= min(j+1, m-1); jj++) {
 
                     /*int kRow, kCol;
-
                     // compute row index in kernel
                     if (ii < i) {
                         kRow = 0;
@@ -300,7 +286,6 @@ void doConvolutionBlur(Image *image, int kernelSize, int kernel[kernelSize][kern
                     } else {
                         kRow = 1;
                     }
-
                     // compute column index in kernel
                     if (jj < j) {
                         kCol = 0;
@@ -349,7 +334,7 @@ void doConvolutionBlur(Image *image, int kernelSize, int kernel[kernelSize][kern
 
 
 
-   // pixelsToChars(pixelsImg, image);
+    // pixelsToChars(pixelsImg, image);
 
     //free(pixelsImg);
     free(backupOrg);
@@ -361,10 +346,8 @@ void doConvolutionBlur(Image *image, int kernelSize, int kernel[kernelSize][kern
 
 void doConvolutionSharpen(Image *image, int kernelSize, int kernel[kernelSize][kernelSize], int kernelScale) {
 /*
-
     pixel* pixelsImg = malloc(m*n*sizeof(pixel));
     pixel* backupOrg = malloc(m*n*sizeof(pixel));
-
     charsToPixels(image, pixelsImg);
     copyPixels(pixelsImg, backupOrg);
 */
