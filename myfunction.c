@@ -386,19 +386,22 @@ void doConvolutionSharpen(Image *image, int kernelSize, int kernel[kernelSize][k
             //sum.num = 0;
 
             //initialize_pixel_sum(&sum);
+            int weight;
+            int once =0;
+            jj = max(j-1, 0);
 
             for(ii = max(i-1, 0); ii <= min(i+1, m-1); ii++) {
-                for(jj = max(j-1, 0); jj <= min(j+1, m-1); jj++) {
-
-                    int kRow, kCol;
-                    int weight = -1;
+                ++once;
+               /* for(jj = max(j-1, 0); jj <= min(j+1, m-1); jj++) {
+                   // int kRow, kCol;
+                    weight = -1;
                     //todo: change the weight only if it the middle
                     // compute row index in kernel
                     if (ii==i && jj==j)
                     {
                         weight =9;
                     }
-                   /* if (ii < i) {
+                   *//* if (ii < i) {
                         kRow = 0;
                     } else if (ii > i) {
                         kRow = 2;
@@ -413,17 +416,34 @@ void doConvolutionSharpen(Image *image, int kernelSize, int kernel[kernelSize][k
                         kCol = 2;
                     } else {
                         kCol = 1;
-                    }*/
+                    }*//*
 
                     // apply kernel on pixel at [ii,jj]
                     //sum_pixels_by_weight(&sum, src[calcIndex(ii, jj, dim)], kernel[kRow][kCol]);
-                    pixel p = backupOrg[calcIndex(ii, jj, m)];
+                   *//* pixel p = backupOrg[calcIndex(ii, jj, m)];
 
                     sum.red += ((int) p.red) * weight;
                     sum.green += ((int) p.green) * weight;
-                    sum.blue += ((int) p.blue) * weight;
+                    sum.blue += ((int) p.blue) * weight;*//*
                     // sum.num++;
+                }*/
+
+                int x= calcIndex(ii, jj, m);
+                pixel pixel1 = backupOrg[x];
+                pixel pixel2 = backupOrg[x+1];
+                pixel pixel3 = backupOrg[x+2];
+                int multMiddlePharam=-1;
+                if(once==2){
+                    multMiddlePharam =9;
                 }
+                weight =-1;
+
+                sum.red += ((int) pixel1.red)* weight +((int) pixel2.red)* multMiddlePharam + ((int)pixel3.red)* weight;
+                sum.green += ((int) pixel1.green)* weight +((int) pixel2.green)* multMiddlePharam + ((int)pixel3.green)* weight;
+                sum.blue += ((int) pixel1.blue)* weight +((int) pixel2.blue)* multMiddlePharam + ((int)pixel3.blue)* weight;
+
+
+
                 /*int x= calcIndex(ii, jj, m);
                 pixel pixel1 = backupOrg[x];
                 pixel pixel2 = backupOrg[x+1];
