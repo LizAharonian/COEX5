@@ -121,7 +121,7 @@ static void sum_pixels_by_weight(pixel_sum *sum, pixel p, int weight) {
 * Ignore pixels where the kernel exceeds bounds. These are pixels with row index smaller than kernelSize/2 and/or
 * column index smaller than kernelSize/2
 */
-void smooth(int dim, pixel *src, pixel *dst, int kernelSize, int kernel[kernelSize][kernelSize], int kernelScale) {
+/*void smooth(int dim, pixel *src, pixel *dst, int kernelSize, int kernel[kernelSize][kernelSize], int kernelScale) {
 //todo: get ride of repptive calculations
     int i, j, halfK, dimMinusHalfKernal;
     halfK = kernelSize / 2;
@@ -181,9 +181,9 @@ void smooth(int dim, pixel *src, pixel *dst, int kernelSize, int kernel[kernelSi
 
             // divide by kernel's weight
             //todo: kernal size is 1 so i deleted it
-           /* sum.red = sum.red / kernelScale;
+           *//* sum.red = sum.red / kernelScale;
             sum.green = sum.green / kernelScale;
-            sum.blue = sum.blue / kernelScale;*/
+            sum.blue = sum.blue / kernelScale;*//*
 
             // truncate each pixel's color values to match the range [0,255]
             current_pixel.red = (unsigned char) (min(max(sum.red, 0), 255));
@@ -199,7 +199,7 @@ void smooth(int dim, pixel *src, pixel *dst, int kernelSize, int kernel[kernelSi
             dst[calcIndex(i, j, dim)] = current_pixel;//applyKernel(dim, i, j, src, kernelSize, kernel, kernelScale);
         }
     }
-}
+}*/
 /*
 void charsToPixels(Image *charsImg, pixel* pixels) {
     int row, col,rn;
@@ -235,13 +235,15 @@ void copyPixels(pixel* src, pixel* dst) {
 */
 
 
-void doConvolutionBlur(Image *image, int kernelSize, int kernel[kernelSize][kernelSize], int kernelScale) {
+void doConvolutionBlur(Image *image, int kernelSize, int kernelScale) {
 /*
     pixel* pixelsImg = malloc(m*n*sizeof(pixel));
     pixel* backupOrg = malloc(m*n*sizeof(pixel));
     charsToPixels(image, pixelsImg);
     copyPixels(pixelsImg, backupOrg);
 */
+    int blurKernel[3][3] = {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}};
+
     //todo: delete these stupid conversions.
     int x = m*n*3;
     pixel* pixelsImg = (pixel*)image->data;
@@ -263,7 +265,7 @@ void doConvolutionBlur(Image *image, int kernelSize, int kernel[kernelSize][kern
 
 
             int ii, jj;
-            int currRow, currCol;
+            //int currRow, currCol;
             pixel_sum sum;
             pixel current_pixel;
 
@@ -351,7 +353,7 @@ void doConvolutionBlur(Image *image, int kernelSize, int kernel[kernelSize][kern
 
 
 
-void doConvolutionSharpen(Image *image, int kernelSize, int kernel[kernelSize][kernelSize], int kernelScale) {
+void doConvolutionSharpen(Image *image, int kernelSize, int kernelScale) {
 /*
     pixel* pixelsImg = malloc(m*n*sizeof(pixel));
     pixel* backupOrg = malloc(m*n*sizeof(pixel));
@@ -363,6 +365,7 @@ void doConvolutionSharpen(Image *image, int kernelSize, int kernel[kernelSize][k
     pixel* pixelsImg = (pixel*)image->data;
     pixel* backupOrg = malloc(x);
     memcpy(backupOrg, pixelsImg , x);
+    int sharpKernel[3][3] = {{-1,-1,-1},{-1,9,-1},{-1,-1,-1}};
 
 
     //smooth(m, backupOrg, pixelsImg, kernelSize, kernel, kernelScale);
@@ -498,17 +501,17 @@ void myfunction(Image *image, char* srcImgpName, char* blurRsltImgName, char* sh
     * [1, 1, 1]
     * [1, 1, 1]
     */
-    int blurKernel[3][3] = {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}};
+    // blurKernel[3][3] = {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}};
 
     /*
     * [-1, -1, -1]
     * [-1, 9, -1]
     * [-1, -1, -1]
     */
-    int sharpKernel[3][3] = {{-1,-1,-1},{-1,9,-1},{-1,-1,-1}};
+    //int sharpKernel[3][3] = {{-1,-1,-1},{-1,9,-1},{-1,-1,-1}};
 
     // blur image
-    doConvolutionBlur(image, 3, blurKernel, 9);
+    doConvolutionBlur(image, 3, 9);
 
     // write result image to file
     writeBMP(image, srcImgpName, blurRsltImgName);
@@ -516,7 +519,7 @@ void myfunction(Image *image, char* srcImgpName, char* blurRsltImgName, char* sh
     //smooth(m, backupOrg, pixelsImg, kernelSize, sharpKernel, 1);
 
     // sharpen the resulting image
-    doConvolutionSharpen(image, 3, sharpKernel, 1);
+    doConvolutionSharpen(image, 3, 1);
 
     // write result image to file
     writeBMP(image, srcImgpName, sharpRsltImgName);
