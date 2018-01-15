@@ -54,7 +54,7 @@ static void sum_pixels_by_weight(pixel_sum *sum, pixel p, int weight) {
 /*
  *  Applies kernel for pixel at (i,j)
  */
-static pixel applyKernel(int dim, int i, int j, pixel *src, int kernelSize, int kernel[kernelSize][kernelSize], int kernelScale) {
+/*static pixel applyKernel(int dim, int i, int j, pixel *src, int kernelSize, int kernel[kernelSize][kernelSize], int kernelScale) {
 
     int ii, jj;
     int currRow, currCol;
@@ -62,7 +62,7 @@ static pixel applyKernel(int dim, int i, int j, pixel *src, int kernelSize, int 
     pixel current_pixel;
 
     sum.red = sum.green = sum.blue = 0;
-    sum.num = 0;
+   // sum.num = 0;
 
     //initialize_pixel_sum(&sum);
 
@@ -96,7 +96,7 @@ static pixel applyKernel(int dim, int i, int j, pixel *src, int kernelSize, int 
             sum.red += ((int) p.red) * weight;
             sum.green += ((int) p.green) * weight;
             sum.blue += ((int) p.blue) * weight;
-            sum.num++;
+           // sum.num++;
         }
     }
 
@@ -114,7 +114,7 @@ static pixel applyKernel(int dim, int i, int j, pixel *src, int kernelSize, int 
     current_pixel.green = (unsigned char) (min(max(sum.green, 0), 255));
     current_pixel.blue = (unsigned char) (min(max(sum.blue, 0), 255));
     return current_pixel;
-}
+}*/
 
 /*
 * Apply the kernel over each pixel.
@@ -131,15 +131,13 @@ void smooth(int dim, pixel *src, pixel *dst, int kernelSize, int kernel[kernelSi
 
             //*************
 
-
-
             int ii, jj;
             //  int currRow, currCol;
             pixel_sum sum;
             pixel current_pixel;
 
             sum.red = sum.green = sum.blue = 0;
-            sum.num = 0;
+            //sum.num = 0;
 
             //initialize_pixel_sum(&sum);
 
@@ -173,7 +171,7 @@ void smooth(int dim, pixel *src, pixel *dst, int kernelSize, int kernel[kernelSi
                     sum.red += ((int) p.red) * weight;
                     sum.green += ((int) p.green) * weight;
                     sum.blue += ((int) p.blue) * weight;
-                    sum.num++;
+                   // sum.num++;
                 }
             }
 
@@ -270,7 +268,7 @@ void doConvolutionBlur(Image *image, int kernelSize, int kernel[kernelSize][kern
             pixel current_pixel;
 
             sum.red = sum.green = sum.blue = 0;
-            sum.num = 0;
+          //  sum.num = 0;
 
             //initialize_pixel_sum(&sum);
 
@@ -302,7 +300,7 @@ void doConvolutionBlur(Image *image, int kernelSize, int kernel[kernelSize][kern
                     sum.red += ((int) p.red);
                     sum.green += ((int) p.green);
                     sum.blue += ((int) p.blue);
-                    sum.num++;
+                   // sum.num++;
                 }
             }
 
