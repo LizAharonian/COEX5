@@ -247,18 +247,23 @@ void copyPixels(pixel* src, pixel* dst) {
 
 
 void doConvolution(Image *image, int kernelSize, int kernel[kernelSize][kernelSize], int kernelScale) {
+/*
 
     pixel* pixelsImg = malloc(m*n*sizeof(pixel));
     pixel* backupOrg = malloc(m*n*sizeof(pixel));
 
     charsToPixels(image, pixelsImg);
     copyPixels(pixelsImg, backupOrg);
+*/
+    pixel* pixelsImg = (pixel*) image->data;
+    pixel* backupOrg = malloc(m*n*sizeof(pixel));
+    memcpy(backupOrg, pixelsImg , m*m*3);
 
     smooth(m, backupOrg, pixelsImg, kernelSize, kernel, kernelScale);
 
-    pixelsToChars(pixelsImg, image);
+   // pixelsToChars(pixelsImg, image);
 
-    free(pixelsImg);
+    //free(pixelsImg);
     free(backupOrg);
 }
 
