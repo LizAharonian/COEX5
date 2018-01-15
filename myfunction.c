@@ -105,6 +105,7 @@ static pixel applyKernel(int dim, int i, int j, pixel *src, int kernelSize, int 
 
     // assign kernel's result to pixel at [i,j]
    // assign_sum_to_pixel(&current_pixel, sum, kernelScale);
+    //todo: remove call to func assign_sum_to_pixel
 
     // divide by kernel's weight
     sum.red = sum.red / kernelScale;
@@ -124,10 +125,12 @@ static pixel applyKernel(int dim, int i, int j, pixel *src, int kernelSize, int 
 * column index smaller than kernelSize/2
 */
 void smooth(int dim, pixel *src, pixel *dst, int kernelSize, int kernel[kernelSize][kernelSize], int kernelScale) {
-
-    int i, j;
-    for (i = kernelSize / 2 ; i < dim - kernelSize / 2; i++) {
-        for (j =  kernelSize / 2 ; j < dim - kernelSize / 2 ; j++) {
+//todo: get ride of repptive calculations
+    int i, j, halfK, dimMinusHalfKernal;
+    halfK = kernelSize / 2;
+    dimMinusHalfKernal = dim - halfK;
+    for (i = halfK ; i < dimMinusHalfKernal; i++) {
+        for (j =  halfK ; j < dimMinusHalfKernal ; j++) {
             dst[calcIndex(i, j, dim)] = applyKernel(dim, i, j, src, kernelSize, kernel, kernelScale);
         }
     }
